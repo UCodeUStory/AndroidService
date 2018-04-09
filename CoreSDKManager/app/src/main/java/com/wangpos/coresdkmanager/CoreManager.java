@@ -13,8 +13,7 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.wangpos.androidservice.CoreServiceBinder;
-import com.wangpos.androidservice.init.InitBinder;
+import com.wangpos.androidservice.core.CoreServiceManager;
 
 import static android.content.Context.BIND_AUTO_CREATE;
 
@@ -22,27 +21,27 @@ import static android.content.Context.BIND_AUTO_CREATE;
  * Created by qiyue on 2018/4/4.
  */
 
-public class CoreSDKManager implements ServiceConnection ,Handler.Callback{
+public class CoreManager implements ServiceConnection ,Handler.Callback{
 
-    private static final String TAG = CoreSDKManager.class.getSimpleName();
+    private static final String TAG = CoreManager.class.getSimpleName();
 
-    private static volatile CoreSDKManager instance;
+    private static volatile CoreManager instance;
 
-    private CoreServiceBinder coreServiceBinder;
+    private CoreServiceManager coreServiceBinder;
 
     private InitListener mOnFinishedInitListener;
 
     private Handler mHandler;
 
-    private CoreSDKManager() {
+    private CoreManager() {
         mHandler = new Handler(Looper.getMainLooper(),this);
     }
 
-    public static CoreSDKManager getInstance() {
+    public static CoreManager getInstance() {
         if (instance == null) {
-            synchronized (CoreSDKManager.class) {
+            synchronized (CoreManager.class) {
                 if (instance == null) {
-                    instance = new CoreSDKManager();
+                    instance = new CoreManager();
                 }
             }
         }
@@ -76,7 +75,7 @@ public class CoreSDKManager implements ServiceConnection ,Handler.Callback{
     @Override
     public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
         Log.i(TAG,"onServiceConnected");
-        coreServiceBinder = CoreServiceBinder.Stub.asInterface(iBinder);
+        coreServiceBinder = CoreServiceManager.Stub.asInterface(iBinder);
         mHandler.sendEmptyMessage(1);
     }
 

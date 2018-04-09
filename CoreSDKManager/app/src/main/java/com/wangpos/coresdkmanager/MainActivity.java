@@ -10,9 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
-import com.wangpos.androidservice.CoreServiceBinder;
-import com.wangpos.androidservice.init.InitBinder;
+import com.wangpos.androidservice.init.InitManager;
 
 import java.util.Random;
 
@@ -24,14 +24,16 @@ public class MainActivity extends AppCompatActivity implements InitListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    CoreSDKManager coreSDKManager;
+    CoreManager coreSDKManager;
+
+    InitManager initManagerService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        coreSDKManager = CoreSDKManager.getInstance();
+        coreSDKManager = CoreManager.getInstance();
         coreSDKManager.init(this,this);
 
 
@@ -45,14 +47,18 @@ public class MainActivity extends AppCompatActivity implements InitListener {
     @Override
     public void onInitOk() {
         Log.i(TAG, "onInitOk");
+         initManagerService = InitManager.Stub.asInterface(coreSDKManager.getService(InitManager.class));
+    }
 
-        InitBinder service = InitBinder.Stub.asInterface(coreSDKManager.getService(InitBinder.class));
 
+    public void getService(View view){
+        String msg = null;
         try {
-            service.init();
+            msg = initManagerService.getName();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
 
+        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
     }
 }
