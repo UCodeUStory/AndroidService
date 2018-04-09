@@ -1,5 +1,5 @@
 // CoreServiceBinder.aidl
-package com.wangpos.androidservice;
+package com.wangpos.androidservice.core;
 
 // Declare any non-default types here with import statements
 
