@@ -7,4 +7,4 @@ SDK - Service 架构
  
 模仿Android原生架构
 
-###SDK(android.jar或framework.jar) Manager->ServiceManager->Manager->ManagerService->
+### SDK(android.jar或framework.jar) Manager->ServiceManager->Manager->ManagerService
